@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://docs.baby-buddy.net/api/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>API - Baby Buddy</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "API";
+    var mkdocs_page_input_path = "api.md";
+    var mkdocs_page_url = "/api/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Baby Buddy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">API</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#schema">Schema</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#get-method">GET Method</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response">Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#options-method">OPTIONS Method</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request_1">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response_1">Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#post-method">POST Method</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request_2">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#timer-field">Timer Field</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response_2">Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#patch-method">PATCH Method</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request_3">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response_3">Response</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#delete-method">DELETE Method</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#request_4">Request</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#response_4">Response</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../import_export/">Import/Export</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Baby Buddy</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>API</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="api">API</h1>
+<p>Baby Buddy uses the <a href="https://www.django-rest-framework.org/">Django REST Framework</a>
+(DRF) to provide a REST API.</p>
+<p>The only requirement for (most) requests is to set the <code>Authorization</code> header as
+described in the <a href="#authentication">Authentication</a> section. The one exception is
+the <code>/api</code> endpoint, which lists all available endpoints and does not require
+authorization.</p>
+<p>Currently, the following endpoints are available for <code>GET</code>, <code>OPTIONS</code>, and
+<code>POST</code> requests:</p>
+<ul>
+<li><code>/api/children/</code></li>
+<li><code>/api/changes/</code> (Diaper Changes)</li>
+<li><code>/api/feedings/</code></li>
+<li><code>/api/notes/</code></li>
+<li><code>/api/sleep/</code></li>
+<li><code>/api/temperature/</code></li>
+<li><code>/api/timers/</code></li>
+<li><code>/api/tummy-times/</code></li>
+<li><code>/api/weight/</code></li>
+</ul>
+<h2 id="authentication">Authentication</h2>
+<p>The <a href="https://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication">TokenAuthentication</a>
+and <a href="https://www.django-rest-framework.org/api-guide/authentication/#sessionauthentication">SessionAuthentication</a>
+are enabled by default. Session authentication covers local API requests made by
+the application itself. Token authentication allows external requests to be
+made.</p>
+<p>:exclamation: <strong>In a production environment, token authentication should only
+be used for API calls to an <code>https</code> endpoint.</strong> :exclamation:</p>
+<p>Each user has an API key that can be used for token authentication. This key can
+be found on the User Settings page for the logged in the user. To use a key for
+an API request, set the request <code>Authorization</code> header to <code>Token &lt;user-key&gt;</code>. E.g.</p>
+<pre><code>Authorization: Token 2h23807gd72h7hop382p98hd823dw3g665g56
+</code></pre>
+<p>If no <code>Authorization</code> header set, or the key is not valid the API will return
+<code>403 Forbidden</code> with additional details in the response body.</p>
+<h2 id="schema">Schema</h2>
+<p>The API schema in <a href="https://swagger.io/specification/">OpenAPI format</a> can be
+found in the <a href="/openapi-schema.yml"><code>openapi-schema.yml</code></a> file in the project
+root. A live version is also available at the <code>/api/schema</code> path of a running
+instance.</p>
+<h2 id="get-method"><code>GET</code> Method</h2>
+<h3 id="request">Request</h3>
+<p>The <code>limit</code> and <code>offset</code> request parameters can be used to limit
+and offset the results set respectively. For example, the following request
+will return five diaper changes starting from the 10th diaper change entry:</p>
+<pre><code>curl -X GET 'https://[...]/api/changes/?limit=5&amp;offset=10' -H 'Authorization: Token [...]'
+{
+    "count": &lt;int&gt;,
+    "next": "https://[...]/api/changes/?limit=5&amp;offset=15",
+    "previous": "https://[...]/api/changes/?limit=5&amp;offset=5",
+    "results": [...]
+}
+</code></pre>
+<p>Field-based filters for specific endpoints can be found the in the <code>filters</code>
+field of the <code>OPTIONS</code> response for specific endpoints.</p>
+<p>Single entries can also be retrieved by adding the ID (or in the case of a 
+Child entry, the slug) of a particular entry:</p>
+<pre><code> curl -X GET https://[...]/api/children/gregory-hill/ -H 'Authorization: Token [...]'
+ {
+    "id":3,
+    "first_name":"Gregory",
+    "last_name":"Hill",
+    "birth_date":"2020-02-11",
+    "slug":"gregory-hill",
+    "picture":null
+}
+curl -X GET https://[...]/api/sleep/1/ -H 'Authorization: Token [...]'
+{
+ "id":480,
+ "child":3,
+ "start":"2020-03-12T21:25:28.916016-07:00",
+ "end":"2020-03-13T01:34:28.916016-07:00",
+ "duration":"04:09:00",
+ "nap":false
+}
+</code></pre>
+<h3 id="response">Response</h3>
+<p>Returns JSON data in the response body in the following format:</p>
+<pre><code>{
+    "count":&lt;int&gt;,
+    "next":&lt;url&gt;,
+    "previous":&lt;url&gt;,
+    "results":[{...}]
+}
+</code></pre>
+<ul>
+<li><code>count</code>: Total number of records (<em>in the database</em>, not just the response).</li>
+<li><code>next</code>: URL for the next set of results.</li>
+<li><code>previous</code>: URL for the previous set of results.</li>
+<li><code>results</code>: An array of the results of the request.</li>
+</ul>
+<p>For single entries, returns JSON data in the response body keyed by model field
+names. This will vary between models.</p>
+<h2 id="options-method"><code>OPTIONS</code> Method</h2>
+<h3 id="request_1">Request</h3>
+<p>All endpoints will respond to an <code>OPTIONS</code> request with detailed information
+about the endpoint's purpose, parameters, filters, etc.</p>
+<h3 id="response_1">Response</h3>
+<p>Returns JSON data in the response body describing the endpoint, available
+options for <code>POST</code> requests, and available filters for <code>GET</code> requests. The
+following example describes the <code>/api/children</code> endpoint:</p>
+<pre><code>{
+    "name": "Child List",
+    "renders": [
+        "application/json",
+        "text/html"
+    ],
+    "parses": [
+        "application/json",
+        "application/x-www-form-urlencoded",
+        "multipart/form-data"
+    ],
+    "actions": {
+        "POST": {
+            "id": {
+                "type": "integer",
+                "required": false,
+                "read_only": true,
+                "label": "ID"
+            },
+            [...]
+        }
+    },
+    "filters": [
+        "first_name",
+        "last_name",
+        "slug"
+    ]
+}
+</code></pre>
+<h2 id="post-method"><code>POST</code> Method</h2>
+<h3 id="request_2">Request</h3>
+<p>To add new entries for a particular endpoint, send a <code>POST</code> request with the
+entry data in JSON format in the request body. The <code>Content-Type</code> header for
+<code>POST</code> request must be set to <code>application/json</code>.</p>
+<p>Regular sanity checks will be performed on relevant data. See the <code>OPTIONS</code>
+response for a particular endpoint for details on required fields and data
+formats.</p>
+<h3 id="timer-field">Timer Field</h3>
+<p>The "timer" field is a special field available for <code>POST</code> operations to model
+endpoints supporting duration (Feeding, Sleep, Tummy Time). Se the "timer"
+in a request to fill in the <code>start</code> and <code>end</code> fields automatically using the
+<code>start</code> and <code>end</code> values <em>from the Timer</em> (the Timer will be stopped if it is
+currently running).</p>
+<p>Additionally, if the Timer has a Child relationship, the <code>child</code> field will be
+filled in automatically use the <code>child</code> value from the Timer.</p>
+<p>The "timer" field will <strong>always override</strong> the relevant fields (<code>child</code>, <code>start</code>,
+and <code>end</code>) on the request. E.g., a <code>POST</code> request with both the <code>timer</code> and <code>end</code>
+fields will ignore the <code>end</code> field value and replace it with the Timer's <code>end</code>
+value. The same applies for <code>start</code> and <code>child</code>. These fields are all <strong>required</strong>
+if the <code>timer</code> field is <em>not</em> set.</p>
+<h3 id="response_2">Response</h3>
+<p>Returns JSON data in the response body describing the added/updated instance or
+error details keyed by either the field in error or the general string <code>non_field_errors</code>
+(e.g., when validation involves multiple fields).</p>
+<h2 id="patch-method"><code>PATCH</code> Method</h2>
+<h3 id="request_3">Request</h3>
+<p>To update existing entries, send a <code>PATCH</code> request to the single entry endpoint
+for the entry to be updated. The <code>Content-Type</code> header for <code>PATCH</code> request must
+be set to <code>application/json</code>. For example, to update a Diaper Change entry with
+ID 947 to indicate a "wet" diaper only:</p>
+<pre><code>curl -X PATCH \
+    -H 'Authorization: Token [...]' \
+    -H "Content-Type: application/json" \
+    -d '{"wet":1, "solid":0}' \
+    https://[...]/api/changes/947/
+</code></pre>
+<p>Regular sanity checks will be performed on relevant data. See the <code>OPTIONS</code>
+response for a particular endpoint for details on required fields and data
+formats.</p>
+<h3 id="response_3">Response</h3>
+<p>Returns JSON data in the response body describing the added/updated instance or
+error details keyed by either the field in error or the general string <code>non_field_errors</code>
+(e.g., when validation involves multiple fields).</p>
+<h2 id="delete-method"><code>DELETE</code> Method</h2>
+<h3 id="request_4">Request</h3>
+<p>To delete an existing entry, send a <code>DELETE</code> request to the single entry
+endpoint to be deleted. For example, to delete a Diaper Change entry with ID
+947:</p>
+<pre><code>curl -X DELETE https://[...]/api/changes/947/ -H 'Authorization: Token [...]'
+</code></pre>
+<h3 id="response_4">Response</h3>
+<p>Returns an empty response with HTTP status code <code>204</code> on success, or a JSON
+encoded error detail if an error occurred (e.g. <code>{"detail":"Not found."}</code> if
+the requested ID does not exist).</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../configuration/" class="btn btn-neutral float-right" title="Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../configuration/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

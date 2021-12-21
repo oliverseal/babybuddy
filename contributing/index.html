@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://docs.baby-buddy.net/contributing/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Contributing - Baby Buddy</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Contributing";
+    var mkdocs_page_input_path = "contributing.md";
+    var mkdocs_page_url = "/contributing/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Baby Buddy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Contributing</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#pull-request-process">Pull request process</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#translation">Translation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#poeditor">POEditor</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#manual">Manual</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#development">Development</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#gulp-commands">Gulp commands</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#gulp">gulp</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#build">build</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#clean">clean</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#collectstatic">collectstatic</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#compilemessages">compilemessages</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#coverage">coverage</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#createcachetable">createcachetable</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#extras">extras</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#fake">fake</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#lint">lint</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#makemessages">makemessages</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#makemigrations">makemigrations</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#migrate">migrate</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#reset">reset</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#runserver">runserver</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#scripts">scripts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#styles">styles</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#test">test</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#updateglyphs">updateglyphs</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#updatestatic">updatestatic</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#icon-font">Icon Font</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../deployment/">Deployment</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../import_export/">Import/Export</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Baby Buddy</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Contributing</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="contributing">Contributing</h1>
+<p>Baby Buddy's maintainers accept and encourage contributions via GitHub <a href="https://github.com/babybuddy/babybuddy/issues">Issues</a>
+and <a href="https://github.com/babybuddy/babybuddy/pulls">Pull Requests</a>. Maintainers
+and users may also be found at <a href="https://gitter.im/babybuddy/Lobby">babybuddy/Lobby</a>
+on Gitter.</p>
+<h2 id="pull-request-process">Pull request process</h2>
+<ol>
+<li>Fork this repository and commit your changes.</li>
+<li>Make and commit tests for any new features or major functionality changes.</li>
+<li>Run <code>gulp lint</code> and <code>gulp test</code> (see <a href="#gulp-commands">Gulp Commands</a>) and 
+   ensure that all tests pass.</li>
+<li>Updated static assets if necessary and commit the <code>/static</code> folder (see <a href="#updatestatic"><code>gulp updatestatic</code></a>).</li>
+<li>Open a <a href="https://github.com/babybuddy/babybuddy/compare">new pull request</a> against
+   the <code>master</code> branch.</li>
+</ol>
+<p>Maintainers will review new pull requests will as soon as possible, and we will
+do our best to provide feedback and support potential contributors.</p>
+<h2 id="translation">Translation</h2>
+<h3 id="poeditor">POEditor</h3>
+<p>Baby Buddy uses <a href="https://poeditor.com/">POEditor</a> for translation contributions. 
+Interested contributors can <a href="https://poeditor.com/join/project/QwQqrpTIzn">join translation of Baby Buddy</a>
+for access to a simple, web-based frontend for adding/editing translation files
+to the project.</p>
+<h3 id="manual">Manual</h3>
+<p>Baby Buddy has support for translation/localization. A manual translation
+process will look something like this:</p>
+<ol>
+<li>
+<p>Set up a development environment (see <a href="#development">Development</a> below).</p>
+</li>
+<li>
+<p>Run <code>gulp makemessages -l xx</code> where <code>xx</code> is a specific locale code in the
+<a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">ISO 639-1 format</a> (e.g.,
+"il" for Italian or "es" for Spanish). This creates a new translation file at
+<code>locale/xx/LC_MESSAGES/django.po</code>, or updates one if it exists.</p>
+</li>
+<li>
+<p>Open the created/updated <code>django.po</code> file and update the header template
+with license and contact info.</p>
+</li>
+<li>
+<p>Start translating! Each translatable string will have a <code>msgid</code> value with 
+the string in English and a corresponding (empty) <code>msgstr</code> value where a
+translated string can be filled in.</p>
+</li>
+<li>
+<p>Once all strings have been translated, run <code>gulp compilemessages -l xx</code> to
+compile an optimized translation file (<code>locale/xx/LC_MESSAGES/django.mo</code>).</p>
+</li>
+<li>
+<p>To expose the new translation as a user setting, add the locale code to the
+<code>LANGUAGES</code> array in the base settings file (<code>babybuddy/settings/base.py</code>).</p>
+</li>
+<li>
+<p>Check if Plotly offers a translation (in <code>node_modules/plotly.js/dist/</code>) for
+the language. If it does:</p>
+<ol>
+<li>
+<p>Add the Plotly translation file path to <a href="/gulpfile.config.js"><code>gulpfile.config.js</code></a> in
+<code>scriptsConfig.graph</code>.</p>
+</li>
+<li>
+<p>Build, collect, and commit the <code>/static</code> folder (see 
+<a href="#updatestatic"><code>gulp updatestatic</code></a>).</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Check if Moment offers a translation (in <code>node_modules/moment/locale/</code>) for
+the language. If it does:</p>
+<ol>
+<li>
+<p>Add the Moment translation file path to <a href="/gulpfile.config.js"><code>gulpfile.config.js</code></a> in
+<code>scriptsConfig.vendor</code>.</p>
+</li>
+<li>
+<p>Build, collect, and commit the <code>/static</code> folder (see 
+<a href="#updatestatic"><code>gulp updatestatic</code></a>).</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Run the development server, log in, and update the user language to test the
+newly translated strings.</p>
+</li>
+</ol>
+<p>Once the translation is complete, commit the new files and changes to a fork
+and <a href="#pull-request-process">create a pull request</a> for review.</p>
+<p>For more information on the Django translation process, see Django's 
+documentation section: <a href="https://docs.djangoproject.com/en/3.0/topics/i18n/translation/">Translation</a>.</p>
+<h2 id="development">Development</h2>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>Python 3.6+, pip, pipenv</li>
+<li>NVM (NodeJS 14.x and NPM 7.x)</li>
+<li>Gulp</li>
+<li>Possibly <code>libpq-dev</code></li>
+<li>This is necessary if <code>psycopg2</code> can't find an appropriate prebuilt binary.</li>
+</ul>
+<h3 id="installation">Installation</h3>
+<ol>
+<li>
+<p>Install pipenv per <a href="https://pipenv.pypa.io/en/latest/install/#installing-pipenv">Installing pipenv</a></p>
+</li>
+<li>
+<p>Install required Python packages, including dev packages</p>
+<p>pipenv install --three --dev</p>
+</li>
+<li>
+<p>If this fails, install <code>libpq-dev</code> (e.g. <code>sudo apt install libpq-dev</code>) and try again.</p>
+</li>
+<li>
+<p>Installed Node 14.x (if necessary)</p>
+<pre><code>nvm install 14
+</code></pre>
+</li>
+<li>
+<p>Activate Node 14.x</p>
+<pre><code>nvm use
+</code></pre>
+</li>
+<li>
+<p>Install Gulp CLI</p>
+<p>npm install -g gulp-cli</p>
+</li>
+<li>
+<p>Install required Node packages</p>
+<p>npm install</p>
+</li>
+<li>
+<p>Set, at least, the <code>DJANGO_SETTINGS_MODULE</code> environment variable</p>
+<p>export DJANGO_SETTINGS_MODULE=babybuddy.settings.development</p>
+<p>This process will differ based on the host OS. The above example is for
+Linux-based systems. See <a href="/docs/configuration.md">Configuration</a> for other
+settings and methods for defining them.</p>
+</li>
+<li>
+<p>Migrate the database</p>
+<p>gulp migrate</p>
+</li>
+<li>
+<p>Create cache table</p>
+<p>gulp createcachetable</p>
+</li>
+<li>
+<p>Build assets and run the server</p>
+<p>gulp</p>
+<p>This command will also watch for file system changes to rebuild assets and
+restart the server as needed.</p>
+</li>
+</ol>
+<p>Open <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a> and log in with the default
+username and password (<code>admin</code>/<code>admin</code>).</p>
+<h3 id="gulp-commands">Gulp commands</h3>
+<p><a href="/gulpfile.js"><code>gulpfile.js</code></a> defines Baby Buddy's Gulp commands.</p>
+<p><a href="/babybuddy/management/commands"><code>babybuddy/management/commands</code></a> defines Baby Buddy's
+management commands.</p>
+<ul>
+<li><a href="#gulp"><code>gulp</code></a></li>
+<li><a href="#build"><code>gulp build</code></a></li>
+<li><a href="#clean"><code>gulp clean</code></a></li>
+<li><a href="#collectstatic"><code>gulp collectstatic</code></a></li>
+<li><a href="#compilemessages"><code>gulp compilemessages</code></a></li>
+<li><a href="#coverage"><code>gulp coverage</code></a></li>
+<li><a href="#createcachetable"><code>gulp createcachetable</code></a></li>
+<li><a href="#extras"><code>gulp extras</code></a></li>
+<li><a href="#fake"><code>gulp fake</code></a></li>
+<li><a href="#lint"><code>gulp lint</code></a></li>
+<li><a href="#makemessages"><code>gulp makemessages</code></a></li>
+<li><a href="#makemigrations"><code>gulp makemigrations</code></a></li>
+<li><a href="#migrate"><code>gulp migrate</code></a></li>
+<li><a href="#reset"><code>gulp reset</code></a></li>
+<li><a href="#runserver"><code>gulp runserver</code></a></li>
+<li><a href="#scripts"><code>gulp scripts</code></a></li>
+<li><a href="#styles"><code>gulp styles</code></a></li>
+<li><a href="#test"><code>gulp test</code></a></li>
+<li><a href="#updatestatic"><code>gulp updatestatic</code></a></li>
+</ul>
+<h4 id="gulp"><code>gulp</code></h4>
+<p>Executes the <code>build</code> and <code>watch</code> commands and runs Django's development server.
+This command also accepts the special parameter <code>--ip</code> for setting the
+server IP address. See <a href="#runserver"><code>gulp runserver</code></a> for details.</p>
+<h4 id="build"><code>build</code></h4>
+<p>Creates all script, style and "extra" assets and places them in the
+<code>babybuddy/static</code> folder.</p>
+<h4 id="clean"><code>clean</code></h4>
+<p>Deletes all build folders and the root <code>static</code> folder. Generally this should
+be run before a <code>gulp build</code> to remove previous build files and the generated
+static assets.</p>
+<h4 id="collectstatic"><code>collectstatic</code></h4>
+<p>Executes Django's <code>collectstatic</code> management task. This task relies on files in
+the <code>babybuddy/static</code> folder, so generally <code>gulp build</code> should be run before
+this command for production deployments. Gulp also passes along
+non-overlapping arguments for this command, e.g. <code>--no-input</code>.</p>
+<p>Note: a <code>SECRET_KEY</code> value must be set for this command to work.</p>
+<h4 id="compilemessages"><code>compilemessages</code></h4>
+<p>Executes Django's <code>compilemessages</code> management task. See <a href="https://docs.djangoproject.com/en/3.0/ref/django-admin/#compilemessages">django-admin compilemessages</a>
+for more details about other options and functionality of this command.</p>
+<h4 id="coverage"><code>coverage</code></h4>
+<p>Create a test coverage report. See <a href="/.coveragerc"><code>.coveragerc</code></a> for default
+settings information.</p>
+<h4 id="createcachetable"><code>createcachetable</code></h4>
+<p>Executes Django's <code>createcachetable</code> management task. See <a href="https://docs.djangoproject.com/en/3.0/ref/django-admin/#createcachetable">django-admin createcachetable</a>
+for more details about other options and functionality of this command.</p>
+<h4 id="extras"><code>extras</code></h4>
+<p>Copies "extra" files (fonts, images and server root contents) to the build
+folder.</p>
+<h4 id="fake"><code>fake</code></h4>
+<p>Adds some fake data to the database. By default, <code>fake</code> creates one child and
+31 days of random data. Use the  <code>--children</code> and <code>--days</code> flags to change the
+default values, e.g. <code>gulp fake --children 5 --days 7</code> to generate five fake
+children and seven days of data for each.</p>
+<h4 id="lint"><code>lint</code></h4>
+<p>Executes Python and SASS linting for all relevant source files.</p>
+<h4 id="makemessages"><code>makemessages</code></h4>
+<p>Executes Django's <code>makemessages</code> management task. See <a href="https://docs.djangoproject.com/en/3.0/ref/django-admin/#makemessages">django-admin makemessages</a>
+for more details about other options and functionality of this command. When
+working on a single translation, the <code>-l</code> flag is useful to make message for 
+only that language, e.g. <code>gulp makemessages -l fr</code> to make only a French
+language translation file.</p>
+<h4 id="makemigrations"><code>makemigrations</code></h4>
+<p>Executes Django's <code>makemigrations</code> management task. Gulp also passes along
+non-overlapping arguments for this command.</p>
+<h4 id="migrate"><code>migrate</code></h4>
+<p>Executes Django's <code>migrate</code> management task. In addition to migrating the
+database, this command creates the default <code>admin</code> user. Gulp also passes along
+non-overlapping arguments for this command.</p>
+<h4 id="reset"><code>reset</code></h4>
+<p>Resets the database to a default state <em>with</em> one fake child and 31 days of
+fake data.</p>
+<h4 id="runserver"><code>runserver</code></h4>
+<p>Executes Django's <code>runserver</code> management task. Gulp passes non-overlapping
+arguments for this command.</p>
+<p>A special parameter, <code>--ip</code>, is also available to set the IP for the server.
+E.g., execute <code>gulp runserver --ip 0.0.0.0:8000</code> to make the server available to
+other devices on your local network.</p>
+<h4 id="scripts"><code>scripts</code></h4>
+<p>Builds and combines relevant application scripts. Generally this command does
+not need to be executed independently - see the <code>build</code> command.</p>
+<h4 id="styles"><code>styles</code></h4>
+<p>Builds and combines SASS styles in to CSS files. Generally this command does
+not need to be executed independently - see the <code>build</code> command.</p>
+<h4 id="test"><code>test</code></h4>
+<p>Executes Baby Buddy's suite of tests.</p>
+<p>Gulp also passes along non-overlapping arguments for this command, however
+individual tests cannot be run with this command. <code>python manage.py test</code> can be
+used for individual test execution.</p>
+<h4 id="updateglyphs"><code>updateglyphs</code></h4>
+<p>Downloads generated glyph font files data from <a href="https://fontello.com/">Fonttello</a>
+based on <a href="/babybuddy/static_src/fontello/config.json"><code>config.json</code> file</a>. This
+only needs to be run after making changes to the config file.</p>
+<h4 id="updatestatic"><code>updatestatic</code></h4>
+<p>Rebuilds Baby Buddy's <code>/static</code> folder by running the following commands in
+order:</p>
+<ul>
+<li><a href="#lint"><code>lint</code></a></li>
+<li><a href="#clean"><code>clean</code></a></li>
+<li><a href="#build"><code>build</code></a></li>
+<li><a href="#collectstatic"><code>collectstatic</code></a></li>
+</ul>
+<p>Execute and commit changes made by this command whenever changing Baby Buddy's
+frontend code (SASS, JS, etc.).</p>
+<h3 id="icon-font">Icon Font</h3>
+<p>Baby Buddy uses <a href="https://fontello.com/">Fontello</a> to build a custom icon font
+for icons used throughout the application. See <a href="/babybuddy/static_src/fontello"><code>babybuddy/static_src/fontello</code></a>
+for further documentation about using the config file with Fontello and license
+information for fonts used by this application.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../deployment/" class="btn btn-neutral float-right" title="Deployment">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../configuration/" class="btn btn-neutral" title="Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../configuration/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../deployment/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

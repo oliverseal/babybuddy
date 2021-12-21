@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="canonical" href="https://docs.baby-buddy.net/deployment/">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Deployment - Baby Buddy</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Deployment";
+    var mkdocs_page_input_path = "deployment.md";
+    var mkdocs_page_url = "/deployment/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Baby Buddy</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../api/">API</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Deployment</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#docker">Docker</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#heroku">Heroku</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#manual">Manual</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#example-deployment">Example deployment</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../import_export/">Import/Export</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Baby Buddy</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Deployment</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="deployment">Deployment</h1>
+<p>The default username and password for Baby Buddy is <code>admin</code>/<code>admin</code>. For any
+deployment, <strong>log in and change the default password immediately</strong>.</p>
+<p>Many of Baby Buddy's configuration settings can be controlled using environment
+variables - see <a href="/docs/configuration.md">Configuration</a> for detailed information.</p>
+<h2 id="docker">Docker</h2>
+<p>Baby Buddy relies on the <a href="https://www.linuxserver.io/">LinuxServer.io</a> community
+for a multi-architecture container with strong support. See
+<a href="https://github.com/linuxserver/docker-babybuddy">linuxserver/docker-babybuddy</a>
+for detailed information about the container or use the following Docker Compose
+configuration as a template to get started quickly:</p>
+<pre><code class="language-yaml">version: &quot;2.1&quot;
+services:
+  babybuddy:
+    image: ghcr.io/linuxserver/babybuddy
+    container_name: babybuddy
+    environment:
+      - TZ=UTC
+    volumes:
+      - /path/to/appdata:/config
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+</code></pre>
+<p>:warning: Baby Buddy v1.7.0 was the final version deployed to
+<a href="https://hub.docker.com/r/babybuddy/babybuddy">babybuddy/babybuddy</a> on Docker Hub
+Future versions of Baby Buddy will use the LSIO container.</p>
+<p>For doing administrative work within the LSIO container, setting an environment variable may be necessary.
+For example:</p>
+<pre><code>docker exec -it babybuddy /bin/bash
+export DJANGO_SETTINGS_MODULE=&quot;babybuddy.settings.base&quot;
+python3 /app/babybuddy/manage.py clearsessions
+</code></pre>
+<h2 id="heroku">Heroku</h2>
+<p><a href="https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Fbabybuddy%2Fbabybuddy&amp;template=https%3A%2F%2Fgithub.com%2Fbabybuddy%2Fbabybuddy"><img alt="Deploy" src="https://www.herokucdn.com/deploy/button.svg" /></a></p>
+<p>For manual deployments to Heroku without using the "deploy" button, make sure to
+create the following settings before pushing:</p>
+<pre><code>heroku config:set DJANGO_SETTINGS_MODULE=babybuddy.settings.heroku
+heroku config:set SECRET_KEY=&lt;CHANGE TO SOMETHING RANDOM&gt;
+heroku config:set DISABLE_COLLECTSTATIC=1
+heroku config:set TIME_ZONE=&lt;DESIRED DEFAULT TIMEZONE&gt;
+</code></pre>
+<p>See <a href="/docs/configuration.md">Configuration</a> for other settings that can be controlled
+by <code>heroku config:set</code>.</p>
+<p>After an initial push, execute the following commands:</p>
+<pre><code>heroku run python manage.py migrate
+heroku run python manage.py createcachetable
+</code></pre>
+<h2 id="manual">Manual</h2>
+<p>There are many ways to deploy Baby Buddy manually to any server/VPS. The basic 
+requirements are Python, a web server, an application server, and a database.</p>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>Python 3.6+, pip, pipenv</li>
+<li>Web server (<a href="http://nginx.org/">nginx</a>, <a href="http://httpd.apache.org/">Apache</a>, etc.)</li>
+<li>Application server (<a href="http://projects.unbit.it/uwsgi">uwsgi</a>, <a href="http://gunicorn.org/">gunicorn</a>, etc.)</li>
+<li>Database (<a href="https://sqlite.org/">sqlite</a>, <a href="https://www.postgresql.org/">Postgres</a>, <a href="https://www.mysql.com/">MySQL</a>, etc.)</li>
+</ul>
+<h3 id="example-deployment">Example deployment</h3>
+<p><em>This example assumes a 512 MB VPS instance with Ubuntu 18.04.</em> It uses Python 3.6+,
+nginx, uwsgi and sqlite. It should be sufficient for a few users(e.g., two parents
+and 1+ child).</p>
+<ol>
+<li>
+<p>Install system packages</p>
+<pre><code>sudo apt-get install python3 python3-pip nginx uwsgi uwsgi-plugin-python3 git libopenjp2-7-dev libpq-dev
+</code></pre>
+</li>
+<li>
+<p>Default python3 to python for this session</p>
+<pre><code>alias python=python3
+</code></pre>
+</li>
+<li>
+<p>Install pipenv</p>
+<pre><code>sudo -H pip3 install pipenv
+</code></pre>
+</li>
+<li>
+<p>Set up directories and files</p>
+<pre><code>sudo mkdir /var/www/babybuddy
+sudo chown $USER:$(id -gn $USER) /var/www/babybuddy
+mkdir -p /var/www/babybuddy/data/media
+git clone https://github.com/babybuddy/babybuddy.git /var/www/babybuddy/public
+</code></pre>
+</li>
+<li>
+<p>Move in to the application folder</p>
+<pre><code>cd /var/www/babybuddy/public
+</code></pre>
+</li>
+<li>
+<p>Set pipenv to install locally.</p>
+<pre><code>export PIPENV_VENV_IN_PROJECT=1
+</code></pre>
+</li>
+<li>
+<p>Initiate and enter the Python environment</p>
+<pre><code>pipenv install --three
+pipenv shell
+</code></pre>
+</li>
+<li>
+<p>Create a production settings file and set the <code>SECRET_KEY</code> and <code>ALLOWED_HOSTS</code> values</p>
+<pre><code>cp babybuddy/settings/production.example.py babybuddy/settings/production.py
+editor babybuddy/settings/production.py
+</code></pre>
+</li>
+<li>
+<p>Initiate the application</p>
+<pre><code>export DJANGO_SETTINGS_MODULE=babybuddy.settings.production
+python manage.py migrate
+python manage.py createcachetable
+</code></pre>
+</li>
+<li>
+<p>Set appropriate permissions on the database and data folder</p>
+<pre><code>sudo chown -R www-data:www-data /var/www/babybuddy/data
+sudo chmod 640 /var/www/babybuddy/data/db.sqlite3
+sudo chmod 750 /var/www/babybuddy/data
+</code></pre>
+</li>
+<li>
+<p>Create and configure the uwsgi app</p>
+<pre><code>sudo editor /etc/uwsgi/apps-available/babybuddy.ini
+</code></pre>
+<p>Example config:</p>
+<pre><code>[uwsgi]
+plugins = python3
+project = babybuddy
+base_dir = /var/www/babybuddy
+
+chdir = %(base_dir)/public
+virtualenv = %(chdir)/.venv
+module =  %(project).wsgi:application
+env = DJANGO_SETTINGS_MODULE=%(project).settings.production
+master = True
+vacuum = True
+</code></pre>
+<p>See the <a href="http://uwsgi-docs.readthedocs.io/en/latest/">uWSGI documentation</a>
+for more advanced configuration details.</p>
+</li>
+<li>
+<p>Symlink config and restart uWSGI:</p>
+<pre><code>sudo ln -s /etc/uwsgi/apps-available/babybuddy.ini /etc/uwsgi/apps-enabled/babybuddy.ini
+sudo service uwsgi restart
+</code></pre>
+</li>
+<li>
+<p>Create and configure the nginx server</p>
+<pre><code>sudo editor /etc/nginx/sites-available/babybuddy
+</code></pre>
+<p>Example config:</p>
+<pre><code>upstream babybuddy {
+    server unix:///var/run/uwsgi/app/babybuddy/socket;
+}
+
+server {
+    listen 80;
+    server_name babybuddy.example.com;
+
+    location / {
+        uwsgi_pass babybuddy;
+        include uwsgi_params;
+    }
+
+    location /media {
+        alias /var/www/babybuddy/data/media;
+    }
+}
+</code></pre>
+<p>See the <a href="https://nginx.org/en/docs/">nginx documentation</a> for more advanced
+configuration details.</p>
+</li>
+<li>
+<p>Symlink config and restart NGINX:</p>
+<pre><code>sudo ln -s /etc/nginx/sites-available/babybuddy /etc/nginx/sites-enabled/babybuddy
+sudo service nginx restart
+</code></pre>
+</li>
+<li>
+<p>That's it (hopefully)! :tada:</p>
+</li>
+</ol>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../import_export/" class="btn btn-neutral float-right" title="Import/Export">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../contributing/" class="btn btn-neutral" title="Contributing"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../contributing/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../import_export/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
