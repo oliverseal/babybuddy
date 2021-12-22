@@ -366,6 +366,27 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#docsbuild" class="md-nav__link">
+    docs:build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docsdeploy" class="md-nav__link">
+    docs:deploy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docswatch" class="md-nav__link">
+    docs:watch
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#clean" class="md-nav__link">
     clean
   </a>
@@ -646,6 +667,27 @@
           <li class="md-nav__item">
   <a href="#build" class="md-nav__link">
     build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docsbuild" class="md-nav__link">
+    docs:build
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docsdeploy" class="md-nav__link">
+    docs:deploy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docswatch" class="md-nav__link">
+    docs:watch
   </a>
   
 </li>
@@ -975,6 +1017,9 @@ management commands.</p>
 <li><a href="#compilemessages"><code>gulp compilemessages</code></a></li>
 <li><a href="#coverage"><code>gulp coverage</code></a></li>
 <li><a href="#createcachetable"><code>gulp createcachetable</code></a></li>
+<li><a href="#docsbuild"><code>gulp docs:build</code></a></li>
+<li><a href="#docsdeploy"><code>gulp docs:deploy</code></a></li>
+<li><a href="#docswatch"><code>gulp docs:watch</code></a></li>
 <li><a href="#extras"><code>gulp extras</code></a></li>
 <li><a href="#fake"><code>gulp fake</code></a></li>
 <li><a href="#lint"><code>gulp lint</code></a></li>
@@ -995,6 +1040,13 @@ server IP address. See <a href="#runserver"><code>gulp runserver</code></a> for 
 <h4 id="build"><code>build</code></h4>
 <p>Creates all script, style and "extra" assets and places them in the
 <code>babybuddy/static</code> folder.</p>
+<h4 id="docsbuild"><code>docs:build</code></h4>
+<p>Builds the documentation site in a local directory (<code>site</code> by default).</p>
+<h4 id="docsdeploy"><code>docs:deploy</code></h4>
+<p>Deploys the documentation site to GitHub Pages.</p>
+<h4 id="docswatch"><code>docs:watch</code></h4>
+<p>Runs a local server for the documentation site reloading whenever documentation
+sites files (in the <code>docs</code> directory) as modified.</p>
 <h4 id="clean"><code>clean</code></h4>
 <p>Deletes all build folders and the root <code>static</code> folder. Generally this should
 be run before a <code>gulp build</code> to remove previous build files and the generated
