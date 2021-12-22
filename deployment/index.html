@@ -454,7 +454,7 @@
 <p>The default username and password for Baby Buddy is <code>admin</code>/<code>admin</code>. For any
 deployment, <strong>log in and change the default password immediately</strong>.</p>
 <p>Many of Baby Buddy's configuration settings can be controlled using environment
-variables - see <a href="/docs/configuration.md">Configuration</a> for detailed information.</p>
+variables - see <a href="/configuration">Configuration</a> for detailed information.</p>
 <h2 id="docker">Docker</h2>
 <p>Baby Buddy relies on the <a href="https://www.linuxserver.io/">LinuxServer.io</a> community
 for a multi-architecture container with strong support. See
@@ -492,7 +492,7 @@ heroku config:set SECRET_KEY=&lt;CHANGE TO SOMETHING RANDOM&gt;
 heroku config:set DISABLE_COLLECTSTATIC=1
 heroku config:set TIME_ZONE=&lt;DESIRED DEFAULT TIMEZONE&gt;
 </code></pre>
-<p>See <a href="/docs/configuration.md">Configuration</a> for other settings that can be controlled
+<p>See <a href="/configuration">Configuration</a> for other settings that can be controlled
 by <code>heroku config:set</code>.</p>
 <p>After an initial push, execute the following commands:</p>
 <pre><code>heroku run python manage.py migrate
