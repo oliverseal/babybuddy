@@ -173,7 +173,7 @@ class DiaperChangeForm(CoreModelForm, TaggableModelForm):
 class FeedingForm(CoreModelForm, TaggableModelForm):
     class Meta:
         model = models.Feeding
-        fields = ["child", "start", "end", "type", "method", "amount", "notes", "tags"]
+        fields = ["child", "start", "end", "amount", "type", "method", "notes", "tags"]
         widgets = {
             "child": ChildRadioSelect,
             "start": forms.DateTimeInput(
