@@ -1,0 +1,28 @@
+{% extends 'cards/base.html' %}
+{% load i18n %}
+
+{% block header %}
+    <a href="{% url "core:pumping-list" %}">
+        {% trans "Last Pumping" %}
+    </a>
+{% endblock %}
+
+{% block title %}
+    {% if pumping %}
+        {% blocktrans trimmed with since=pumping.start|timesince time=pumping.start|time %}
+            <div>{{ since }} ago</div>
+            <small>{{ time }}</small>
+        {% endblocktrans %}
+    {% else %}
+        {% trans "None" %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if pumping %}
+        {{ pumping.get_method_display }}
+        {% if pumping.amount %}
+            ({{ pumping.amount }})
+        {% endif %}
+    {% endif %}
+{% endblock %}

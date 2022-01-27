@@ -1,0 +1,22 @@
+version: '3.5'
+services:
+  babybuddy:
+    stdin_open: true
+    tty: true
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - '80:8000'
+    networks:
+      - bb_net
+    environment:
+      - ALLOWED_HOSTS=local.babybuddy.com
+    command: /app/node_modules/.bin/gulp runserver --ip 0.0.0.0:8000
+
+networks:
+  bb_net:
+    name: bb_net
+    driver: bridge

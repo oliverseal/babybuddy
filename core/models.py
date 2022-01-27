@@ -278,31 +278,18 @@ class Feeding(models.Model):
     duration = models.DurationField(
         editable=False, null=True, verbose_name=_("Duration")
     )
-    type = models.CharField(
-        choices=[
-            ("breast milk", _("Breast milk")),
-            ("formula", _("Formula")),
-            ("fortified breast milk", _("Fortified breast milk")),
-            ("solid food", _("Solid food")),
-        ],
-        max_length=255,
-        verbose_name=_("Type"),
-    )
-    method = models.CharField(
-        choices=[
-            ("bottle", _("Bottle")),
-            ("left breast", _("Left breast")),
-            ("right breast", _("Right breast")),
-            ("both breasts", _("Both breasts")),
-            ("parent fed", _("Parent fed")),
-            ("self fed", _("Self fed")),
-        ],
-        max_length=255,
-        verbose_name=_("Method"),
-    )
-    amount = models.FloatField(blank=True, null=True, verbose_name=_("Amount"))
-    notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
-    tags = TaggableManager(blank=True, through=Tagged)
+    amount = models.FloatField(blank=True, null=True, verbose_name=_('Amount'))
+    notes = models.TextField(blank=True, null=True, verbose_name=_('Notes'))
+
+    def save(self, *args, **kwargs):
+        if self.start and self.end:
+            self.duration = self.end - self.start
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        validate_time(self.start, 'start')
+        validate_duration(self)
+        validate_unique_period(self.__class__.objects.filter(child=self.child), self)
 
     objects = models.Manager()
 
@@ -314,16 +301,6 @@ class Feeding(models.Model):
 
     def __str__(self):
         return str(_("Feeding"))
-
-    def save(self, *args, **kwargs):
-        if self.start and self.end:
-            self.duration = self.end - self.start
-        super(Feeding, self).save(*args, **kwargs)
-
-    def clean(self):
-        validate_time(self.start, "start")
-        validate_duration(self)
-        validate_unique_period(Feeding.objects.filter(child=self.child), self)
 
 
 class HeadCircumference(models.Model):

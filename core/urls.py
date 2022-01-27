@@ -44,20 +44,52 @@ urlpatterns = [
     path(
         "feedings/<int:pk>/delete/",
         views.FeedingDelete.as_view(),
-        name="feeding-delete",
+        name='feeding-delete'
     ),
-    path("notes/", views.NoteList.as_view(), name="note-list"),
-    path("notes/add/", views.NoteAdd.as_view(), name="note-add"),
-    path("notes/<int:pk>/", views.NoteUpdate.as_view(), name="note-update"),
-    path("notes/<int:pk>/delete/", views.NoteDelete.as_view(), name="note-delete"),
-    path("sleep/", views.SleepList.as_view(), name="sleep-list"),
-    path("sleep/add/", views.SleepAdd.as_view(), name="sleep-add"),
-    path("sleep/<int:pk>/", views.SleepUpdate.as_view(), name="sleep-update"),
-    path("sleep/<int:pk>/delete/", views.SleepDelete.as_view(), name="sleep-delete"),
-    path("temperature/", views.TemperatureList.as_view(), name="temperature-list"),
-    path("temperature/add/", views.TemperatureAdd.as_view(), name="temperature-add"),
+
+    path('pumpings/', views.PumpingList.as_view(), name='pumping-list'),
+    path('pumpings/add/', views.PumpingAdd.as_view(), name='pumping-add'),
     path(
-        "temperature/<int:pk>/",
+        'pumpings/<int:pk>/',
+        views.PumpingUpdate.as_view(),
+        name='pumping-update'
+    ),
+    path(
+        'pumpings/<int:pk>/delete/',
+        views.PumpingDelete.as_view(),
+        name='pumping-delete'
+    ),
+
+    path('notes/', views.NoteList.as_view(), name='note-list'),
+    path('notes/add/', views.NoteAdd.as_view(), name='note-add'),
+    path('notes/<int:pk>/', views.NoteUpdate.as_view(), name='note-update'),
+    path(
+        'notes/<int:pk>/delete/',
+        views.NoteDelete.as_view(),
+        name='note-delete'
+    ),
+
+    path('sleep/', views.SleepList.as_view(), name='sleep-list'),
+    path('sleep/add/', views.SleepAdd.as_view(), name='sleep-add'),
+    path('sleep/<int:pk>/', views.SleepUpdate.as_view(), name='sleep-update'),
+    path(
+        'sleep/<int:pk>/delete/',
+        views.SleepDelete.as_view(),
+        name='sleep-delete'
+    ),
+
+    path(
+        'temperature/',
+        views.TemperatureList.as_view(),
+        name='temperature-list'
+    ),
+    path(
+        'temperature/add/',
+        views.TemperatureAdd.as_view(),
+        name='temperature-add'
+    ),
+    path(
+        'temperature/<int:pk>/',
         views.TemperatureUpdate.as_view(),
         name="temperature-update",
     ),
