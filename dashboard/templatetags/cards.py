@@ -188,7 +188,7 @@ def card_pumping_last(context, child):
 
     return {
         'type': 'pumping',
-        'feeding': instance,
+        'pumping': instance,
         'empty': empty,
         'hide_empty': _hide_empty(context)
     }

@@ -292,8 +292,6 @@ class PumpingDelete(CoreDeleteView):
     success_url = reverse_lazy('core:pumping-list')
 
 
-
-
 class NoteList(PermissionRequiredMixin, BabyBuddyFilterView):
     model = models.Note
     template_name = "core/note_list.html"

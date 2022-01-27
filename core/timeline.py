@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils import timezone, timesince
 from django.utils.translation import gettext as _
 
-from core.models import DiaperChange, Feeding, Note, Sleep, TummyTime
+from core.models import DiaperChange, Feeding, Note, Pumping, Sleep, TummyTime
 from datetime import timedelta
 
 
@@ -20,6 +20,7 @@ def get_objects(date, child=None):
 
     _add_diaper_changes(min_date, max_date, events, child)
     _add_feedings(min_date, max_date, events, child)
+    _add_pumpings(min_date, max_date, events, child)
     _add_sleeps(min_date, max_date, events, child)
     _add_tummy_times(min_date, max_date, events, child)
     _add_notes(min_date, max_date, events, child)
@@ -165,6 +166,55 @@ def _add_feedings(min_date, max_date, events, child=None):
                 "tags": instance.tags.all(),
             }
         )
+
+
+def _add_pumpings(min_date, max_date, events, child=None):
+    # Ensure first feeding has a previous.
+    yesterday = min_date - timedelta(days=1)
+    prev_start = None
+
+    instances = Pumping.objects.filter(
+        start__range=(yesterday, max_date)).order_by('start')
+    if child:
+        instances = instances.filter(child=child)
+    for instance in instances:
+        details = []
+        if instance.notes:
+            details.append(instance.notes)
+        time_since_prev = None
+        if prev_start:
+            time_since_prev = \
+                timesince.timesince(prev_start, now=instance.start)
+        prev_start = instance.start
+        if instance.start < min_date:
+            continue
+        edit_link = reverse('core:pumping-update', args=[instance.id])
+        if instance.amount:
+            details.append(_('Amount: %(amount).0f') % {
+                'amount': instance.amount,
+            })
+        events.append({
+            'time': timezone.localtime(instance.start),
+            'event': _('Started pumping for %(child)s.') % {
+                'child': instance.child.first_name
+            },
+            'details': details,
+            'edit_link': edit_link,
+            'time_since_prev': time_since_prev,
+            'model_name': instance.model_name,
+            'type': 'start'
+        })
+        events.append({
+            'time': timezone.localtime(instance.end),
+            'event': _('Finished pumping for %(child)s.') % {
+                'child': instance.child.first_name
+            },
+            'details': details,
+            'edit_link': edit_link,
+            'duration': timesince.timesince(instance.start, now=instance.end),
+            'model_name': instance.model_name,
+            'type': 'end'
+        })
 
 
 def _add_diaper_changes(min_date, max_date, events, child):
