@@ -1,0 +1,64 @@
+{% extends 'cards/base.html' %}
+{% load duration i18n %}
+
+{% block header %}
+<a href="{% url "core:feeding-list" %}">
+    {% trans "Feeding State" %}
+</a>
+{% endblock %}
+
+{% block title %}
+<div class="feeding-timer">
+    {% if timer %}
+    <div class="d-block mb-4">
+        <a href="{% url 'core:timer-update' pk=timer.id %}">
+            {% blocktrans trimmed with amount=timer.name hours=timer.pending_duration|hours minutes=timer.pending_duration|minutes seconds=timer.pending_duration|seconds %}
+            <div id="feedingtimer-status">
+                Feeding {{amount}}ml for
+                <span class="timer-hours">{{ hours }}</span>h
+                <span class="timer-minutes">{{ minutes }}</span>m
+                <span class="timer-seconds">{{ seconds }}</span>s
+            </div>
+            {% endblocktrans %}
+        </a>
+    </div>
+    <div class="d-block">
+        <form action="{% url 'core:feeding-timer-stop' %}?dashboard=true" role="form" method="post" class="d-inline" data-mode="stop">
+            {% csrf_token %}
+            <input type="hidden" name="amount" value="{{ timer.name }}" />
+            <input type="submit" class="btn btn-error" value="{% trans 'Stop 40' %}" data-amount="40" />
+            <input type="submit" class="btn btn-error" value="{% trans 'Stop 60' %}" data-amount="60" />
+            <input type="submit" class="btn btn-error" value="{% trans 'Stop 80' %}" data-amount="80" />
+            <input type="submit" class="btn btn-error" value="{% trans 'Stop 100' %}" data-amount="100" />
+        </form>
+    </div>
+    {% else %}
+    <form action="{% url 'core:feeding-timer-add-quick' %}?dashboard=true" role="form" method="post" class="d-inline" data-mode="start">
+        {% csrf_token %}
+        <input type="hidden" name="name" value="{{ timer.name }}" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'Start 40' %}" data-amount="40" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'Start 60' %}" data-amount="60" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'Start 80' %}" data-amount="80" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'Start 100' %}" data-amount="100" />
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<script type="application/javascript">
+    window.addEventListener("DOMContentLoaded", function (event) {
+        const t = new BabyBuddy.Timer('{{ timer.id }}', 'feedingtimer-status');
+        t.run();
+
+        [...document.querySelectorAll('.feeding-timer form')].forEach(function(form) {
+            let hidden = form.querySelector('input[name="name"], input[name="amount"]');
+            [...form.querySelectorAll('input[type="submit"]')].forEach(function(input) {
+                input.addEventListener('mousedown', function(event) {
+                    hidden.value = input.dataset.amount;
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

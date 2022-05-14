@@ -194,6 +194,26 @@ def card_pumping_last(context, child):
     }
 
 
+@register.inclusion_tag('cards/feeding_toggle.html', takes_context=True)
+def card_feeding_toggle(context, child):
+    """
+    A form to toggle on/off feeding timers with amounts.
+    :param child: an instance of the Child model.
+    :returns: a dictionary with the most recent Sleep instance.
+    """
+    instance = models.Timer.objects.filter(child=child) \
+        .filter(intent=models.Feeding.model_name, end__isnull=True) \
+        .order_by('-end').first()
+    empty = not instance
+
+    return {
+        'type': 'timer',
+        'timer': instance,
+        'feeding_timer': instance,
+        'empty': empty,
+        'hide_empty': _hide_empty(context)
+    }
+
 
 @register.inclusion_tag('cards/feeding_last_method.html', takes_context=True)
 def card_feeding_last_method(context, child):
@@ -239,6 +259,27 @@ def card_sleep_last(context, child):
         "sleep": instance,
         "empty": empty,
         "hide_empty": _hide_empty(context),
+    }
+
+
+@register.inclusion_tag('cards/sleep_toggle.html', takes_context=True)
+def card_sleep_toggle(context, child):
+    """
+    A form to toggle on/off sleep timers.
+    :param child: an instance of the Child model.
+    :returns: a dictionary with the most recent Sleep instance.
+    """
+    instance = models.Timer.objects.filter(child=child) \
+        .filter(intent=models.Sleep.model_name, end__isnull=True) \
+        .order_by('-end').first()
+    empty = not instance
+
+    return {
+        'type': 'timer',
+        'timer': instance,
+        'sleep_timer': instance,
+        'empty': empty,
+        'hide_empty': _hide_empty(context)
     }
 
 

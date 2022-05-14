@@ -6,55 +6,53 @@
  *  * timer-minutes
  *  * timer-hours
  */
-BabyBuddy.Timer = function ($) {
-    var runIntervalId = null;
-    var timerId = null;
-    var timerElement = null;
-    var lastUpdate = moment();
-    var hidden = null;
 
-    var Timer = {
-        run: function(timer_id, element_id) {
-            timerId = timer_id;
-            timerElement = $('#' + element_id);
+(function ($) {
+    class Timer {
+        constructor(timer_id, element_id) {
+            this.timerId = timer_id;
+            this.timerElement = $('#' + element_id);
+            this.lastUpdate = moment();
+        }
 
-            if (timerElement.length == 0) {
+        run() {
+            if (this.timerElement.length == 0) {
                 console.error('BBTimer: Timer element not found.');
                 return false;
             }
 
-            if (timerElement.find('.timer-seconds').length == 0
-                || timerElement.find('.timer-minutes').length == 0
-                || timerElement.find('.timer-hours').length == 0) {
+            if (this.timerElement.find('.timer-seconds').length == 0
+                || this.timerElement.find('.timer-minutes').length == 0
+                || this.timerElement.find('.timer-hours').length == 0) {
                 console.error('BBTimer: Element does not contain expected children.');
                 return false;
             }
 
-            runIntervalId = setInterval(this.tick, 1000);
+            this.runIntervalId = setInterval(() => this.tick(), 1000);
 
             // If the page just came in to view, update the timer data with the
             // current actual duration. This will (potentially) help mobile
             // phones that lock with the timer page open.
             if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
+                this.hidden = "hidden";
             }
             else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
+                this.hidden = "msHidden";
             }
             else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
+                this.hidden = "webkitHidden";
             }
-            window.addEventListener('focus', Timer.handleVisibilityChange, false);
-        },
+            window.addEventListener('focus', this.handleVisibilityChange.bind(this), false);
+        }
 
-        handleVisibilityChange: function() {
-            if (!document[hidden] && moment().diff(lastUpdate) > 10000) {
-                Timer.update();
+        handleVisibilityChange() {
+            if (!document[this.hidden] && moment().diff(this.lastUpdate) > 10000) {
+                this.update();
             }
-        },
+        }
 
-        tick: function() {
-            var s = timerElement.find('.timer-seconds');
+        tick() {
+            var s = this.timerElement.find('.timer-seconds');
             var seconds = Number(s.text());
             if (seconds < 59) {
                 s.text(seconds + 1);
@@ -64,7 +62,7 @@ BabyBuddy.Timer = function ($) {
                 s.text(0);
             }
 
-            var m = timerElement.find('.timer-minutes');
+            var m = this.timerElement.find('.timer-minutes');
             var minutes = Number(m.text());
             if (minutes < 59) {
                 m.text(minutes + 1);
@@ -74,31 +72,31 @@ BabyBuddy.Timer = function ($) {
                 m.text(0);
             }
 
-            var h = timerElement.find('.timer-hours');
+            var h = this.timerElement.find('.timer-hours');
             var hours = Number(h.text());
             h.text(hours + 1);
-        },
+        }
 
-        update: function() {
-            $.get('/api/timers/' + timerId + '/', function(data) {
+        update() {
+            $.get('/api/timers/' + this.timerId + '/', function(data) {
                 if (data && 'duration' in data) {
-                    clearInterval(runIntervalId);
+                    clearInterval(this.runIntervalId);
                     var duration = moment.duration(data.duration);
-                    timerElement.find('.timer-hours').text(duration.hours());
-                    timerElement.find('.timer-minutes').text(duration.minutes());
-                    timerElement.find('.timer-seconds').text(duration.seconds());
-                    lastUpdate = moment();
+                    this.timerElement.find('.timer-hours').text(duration.hours());
+                    this.timerElement.find('.timer-minutes').text(duration.minutes());
+                    this.timerElement.find('.timer-seconds').text(duration.seconds());
+                    this.lastUpdate = moment();
 
                     if (data['active']) {
-                        runIntervalId = setInterval(Timer.tick, 1000);
+                        this.runIntervalId = setInterval(() => this.tick(), 1000);
                     }
                     else {
-                        timerElement.addClass('timer-stopped');
+                        this.timerElement.addClass('timer-stopped');
                     }
                 }
             });
         }
     };
 
-    return Timer;
-}(jQuery);
+    BabyBuddy.Timer = Timer;
+})(jQuery);

@@ -1,5 +1,19 @@
 version: '3.5'
 services:
+  postgresql:
+    build:
+      context: ./data/postgres
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    networks:
+      - bb_net
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: bb_dev
   babybuddy:
     stdin_open: true
     tty: true
@@ -15,8 +29,13 @@ services:
     environment:
       - ALLOWED_HOSTS=local.babybuddy.com
     command: /app/node_modules/.bin/gulp runserver --ip 0.0.0.0:8000
+    depends_on:
+      - postgresql
 
 networks:
   bb_net:
     name: bb_net
     driver: bridge
+
+volumes:
+  pg_data:

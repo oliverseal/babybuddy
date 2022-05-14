@@ -101,7 +101,8 @@
 {% block javascript %}
     {% if object.active %}
         <script type="application/javascript">
-            BabyBuddy.Timer.run({{ timer.id }}, 'timer-status');
+            const t = new BabyBuddy.Timer({{ timer.id }}, 'timer-status');
+            t.run();
         </script>
     {% endif %}
 {% endblock %}

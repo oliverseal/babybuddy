@@ -248,7 +248,7 @@ class TemperatureForm(CoreModelForm, TaggableModelForm):
 class TimerForm(CoreModelForm):
     class Meta:
         model = models.Timer
-        fields = ["child", "name", "start"]
+        fields = ['child', 'name', 'start', 'intent']
         widgets = {
             "child": ChildRadioSelect,
             "start": forms.DateTimeInput(

@@ -503,6 +503,59 @@ class Temperature(models.Model):
         validate_time(self.time, "time")
 
 
+class TummyTime(models.Model):
+    model_name = 'tummytime'
+    child = models.ForeignKey(
+        'Child',
+        on_delete=models.CASCADE,
+        related_name='tummy_time',
+        verbose_name=_('Child')
+    )
+    start = models.DateTimeField(
+        blank=False,
+        null=False,
+        verbose_name=_('Start time')
+    )
+    end = models.DateTimeField(
+        blank=False,
+        null=False,
+        verbose_name=_('End time')
+    )
+    duration = models.DurationField(
+        editable=False,
+        null=True,
+        verbose_name=_('Duration')
+    )
+    milestone = models.CharField(
+        blank=True,
+        max_length=255,
+        verbose_name=_('Milestone')
+    )
+
+    objects = models.Manager()
+
+    class Meta:
+        default_permissions = ('view', 'add', 'change', 'delete')
+        ordering = ['-start']
+        verbose_name = _('Tummy Time')
+        verbose_name_plural = _('Tummy Time')
+
+    def __str__(self):
+        return str(_('Tummy Time'))
+
+    def save(self, *args, **kwargs):
+        if self.start and self.end:
+            self.duration = self.end - self.start
+        super(TummyTime, self).save(*args, **kwargs)
+
+    def clean(self):
+        validate_time(self.start, 'start')
+        validate_time(self.end, 'end')
+        validate_duration(self)
+        validate_unique_period(
+            TummyTime.objects.filter(child=self.child), self)
+
+
 class Timer(models.Model):
     model_name = "timer"
     child = models.ForeignKey(
@@ -532,6 +585,18 @@ class Timer(models.Model):
         related_name="timers",
         verbose_name=_("User"),
     )
+    intent = models.CharField(
+        blank=True,
+        null=True,
+        max_length=255,
+        verbose_name=_('Intent'),
+        choices=[
+            (Sleep.model_name, _('Sleep')),
+            (Feeding.model_name, _('Feeding')),
+            (Pumping.model_name, _('Pumping')),
+            (TummyTime.model_name, _('TummyTime')),
+        ],
+    )
 
     objects = models.Manager()
 
@@ -552,6 +617,13 @@ class Timer(models.Model):
         if title and self.child and Child.count() > 1:
             title = format_lazy("{title} ({child})", title=title, child=self.child)
         return title
+
+    @property
+    def pending_duration(self):
+        """ Get the pending duration. """
+        if self.end:
+            return self.end - self.start
+        return timezone.now() - self.start
 
     @property
     def user_username(self):
@@ -596,47 +668,6 @@ class Timer(models.Model):
         if self.end:
             validate_time(self.end, "end")
         validate_duration(self)
-
-
-class TummyTime(models.Model):
-    model_name = "tummytime"
-    child = models.ForeignKey(
-        "Child",
-        on_delete=models.CASCADE,
-        related_name="tummy_time",
-        verbose_name=_("Child"),
-    )
-    start = models.DateTimeField(blank=False, null=False, verbose_name=_("Start time"))
-    end = models.DateTimeField(blank=False, null=False, verbose_name=_("End time"))
-    duration = models.DurationField(
-        editable=False, null=True, verbose_name=_("Duration")
-    )
-    milestone = models.CharField(
-        blank=True, max_length=255, verbose_name=_("Milestone")
-    )
-    tags = TaggableManager(blank=True, through=Tagged)
-
-    objects = models.Manager()
-
-    class Meta:
-        default_permissions = ("view", "add", "change", "delete")
-        ordering = ["-start"]
-        verbose_name = _("Tummy Time")
-        verbose_name_plural = _("Tummy Time")
-
-    def __str__(self):
-        return str(_("Tummy Time"))
-
-    def save(self, *args, **kwargs):
-        if self.start and self.end:
-            self.duration = self.end - self.start
-        super(TummyTime, self).save(*args, **kwargs)
-
-    def clean(self):
-        validate_time(self.start, "start")
-        validate_time(self.end, "end")
-        validate_duration(self)
-        validate_unique_period(TummyTime.objects.filter(child=self.child), self)
 
 
 class Weight(models.Model):

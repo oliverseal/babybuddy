@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import re
+
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.forms import Form
@@ -489,6 +491,168 @@ class TimerAddQuick(PermissionRequiredMixin, RedirectView):
             "next", reverse("core:timer-detail", args={instance.id})
         )
         return super(TimerAddQuick, self).get(request, *args, **kwargs)
+
+
+class SleepTimerAddQuick(PermissionRequiredMixin, RedirectView):
+    http_method_names = ['post']
+    permission_required = ('core.add_timer',)
+
+    def post(self, request, *args, **kwargs):
+        # Add child relationship if there is only Child instance.
+        if models.Child.count() == 1:
+            target_child = models.Child.objects.first()
+
+        already_running = models.Timer.objects.filter(
+            intent=models.Sleep.model_name,
+            child=target_child,
+            end=None,
+        ).first()
+
+        if already_running:
+            instance = already_running
+        else:
+            instance = models.Timer.objects.create(
+                user=request.user,
+                intent=models.Sleep.model_name,
+                name='sleeping',
+                child=target_child,
+                start=timezone.now(),
+            )
+        if request.GET.get("dashboard", None):
+            self.url = request.GET.get(
+                'next', reverse('dashboard:dashboard'))
+        else:
+            self.url = request.GET.get(
+                'next', reverse('core:timer-detail', args={instance.id}))
+        return super().get(request, *args, **kwargs)
+
+
+class SleepTimerStop(PermissionRequiredMixin, RedirectView):
+    http_method_names = ['post']
+    permission_required = ('core.add_timer',)
+
+    def post(self, request, *args, **kwargs):
+        # Add child relationship if there is only Child instance.
+        if models.Child.count() == 1:
+            target_child = models.Child.objects.first()
+
+        already_running = models.Timer.objects.filter(
+            intent=models.Sleep.model_name,
+            child=target_child,
+            end=None,
+        ).first()
+
+        if already_running:
+            already_running.stop()
+            instance = models.Sleep(
+                child=target_child,
+                start=already_running.start,
+                end=already_running.end,
+            )
+            instance.save()
+
+            if request.GET.get("dashboard", None):
+                self.url = request.GET.get(
+                    'next', reverse('dashboard:dashboard'))
+            else:
+                self.url = request.GET.get(
+                    'next', reverse('core:sleep-update', args={instance.id}))
+        else:
+            last_sleep = models.Sleep.objects.filter(
+                child=target_child,
+            ).order_by('-end').first()
+            self.url = request.GET.get(
+                'next', reverse('dashboard:dashboard'))
+        return super().get(request, *args, **kwargs)
+
+
+class FeedingTimerAddQuick(PermissionRequiredMixin, RedirectView):
+    http_method_names = ['post']
+    permission_required = ('core.add_timer',)
+
+    def post(self, request, *args, **kwargs):
+        # Add child relationship if there is only Child instance.
+        if models.Child.count() == 1:
+            target_child = models.Child.objects.first()
+
+        name = request.POST.get('name', '')
+
+        already_running = models.Timer.objects.filter(
+            intent=models.Feeding.model_name,
+            child=target_child,
+            end=None,
+        ).first()
+
+        if already_running:
+            instance = already_running
+        else:
+            instance = models.Timer.objects.create(
+                user=request.user,
+                intent=models.Feeding.model_name,
+                name=name,
+                child=target_child,
+            )
+        if request.GET.get("dashboard", None):
+            self.url = request.GET.get(
+                'next', reverse('dashboard:dashboard'))
+        else:
+            self.url = request.GET.get(
+                'next', reverse('core:timer-detail', args={instance.id}))
+        return super().get(request, *args, **kwargs)
+
+
+class FeedingTimerStop(PermissionRequiredMixin, RedirectView):
+    http_method_names = ['post']
+    permission_required = ('core.add_timer',)
+
+    def post(self, request, *args, **kwargs):
+        # Add child relationship if there is only Child instance.
+        if models.Child.count() == 1:
+            target_child = models.Child.objects.first()
+
+        already_running = models.Timer.objects.filter(
+            intent=models.Feeding.model_name,
+            child=target_child,
+            end=None,
+        ).first()
+
+        if already_running:
+            already_running.stop()
+            amount_string = request.POST.get("amount", already_running.name)
+            try:
+                amount = int(amount_string)
+            except ValueError:
+                if re.match(r'^[0-9\+]+$', amount_string):
+                    amount = eval(already_running, {'__builtins__':None})
+                else:
+                    amount = None
+            last_feeding = models.Feeding.objects.filter(
+                child=target_child,
+            ).order_by('-end').first()
+
+            instance = models.Feeding(
+                child=target_child,
+                start=already_running.start,
+                end=already_running.end,
+                amount=amount,
+                type=last_feeding.type if last_feeding else None,
+                method=last_feeding.method if last_feeding else None,
+            )
+            instance.save()
+
+            if request.GET.get("dashboard", None):
+                self.url = request.GET.get(
+                    'next', reverse('dashboard:dashboard'))
+            else:
+                self.url = request.GET.get(
+                    'next', reverse('core:feeding-detail', args={instance.id}))
+        else:
+            last = models.Feeding.objects.filter(
+                child=target_child,
+            ).order_by('-end').first()
+            self.url = request.GET.get(
+                'next', reverse('core:feeding-detail', args={last.id}))
+        return super().get(request, *args, **kwargs)
 
 
 class TimerRestart(PermissionRequiredMixin, RedirectView):

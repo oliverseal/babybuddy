@@ -1,0 +1,44 @@
+{% extends 'cards/base.html' %}
+{% load duration i18n %}
+
+{% block header %}
+    <a href="{% url "core:sleep-list" %}">
+        {% trans "Sleep State" %}
+    </a>
+{% endblock %}
+
+{% block title %}
+    {% if timer %}
+        <div class="d-flex">
+            <form action="{% url 'core:sleep-timer-stop' %}?dashboard=true" role="form" method="post" class="d-inline">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-error" value="{% trans 'Stop' %}" />
+            </form>
+            &nbsp;
+            <a href="{% url 'core:timer-detail' pk=timer.id %}">
+            {% blocktrans trimmed with hours=timer.pending_duration|hours minutes=timer.pending_duration|minutes seconds=timer.pending_duration|seconds %}
+                <small id="sleeptimer-status">
+                Sleeping
+                    <span class="timer-hours">{{ hours }}</span>h
+                    <span class="timer-minutes">{{ minutes }}</span>m
+                    <span class="timer-seconds">{{ seconds }}</span>s
+                </small>
+            {% endblocktrans %}
+            </a>
+        </div>
+    {% else %}
+        <form action="{% url 'core:sleep-timer-add-quick' %}?dashboard=true" role="form" method="post" class="d-inline">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary" value="{% trans 'Start' %}" />
+        </form>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <script type="application/javascript">
+        window.addEventListener("DOMContentLoaded", function(event) {
+            const t = new BabyBuddy.Timer('{{ timer.id }}', 'sleeptimer-status');
+            t.run();
+        });
+    </script>
+{% endblock %}
