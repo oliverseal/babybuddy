@@ -54,9 +54,11 @@
         [...document.querySelectorAll('.feeding-timer form')].forEach(function(form) {
             let hidden = form.querySelector('input[name="name"], input[name="amount"]');
             [...form.querySelectorAll('input[type="submit"]')].forEach(function(input) {
-                input.addEventListener('mousedown', function(event) {
+                function setValue(e) {
                     hidden.value = input.dataset.amount;
-                });
+                }
+                input.addEventListener('mousedown', setValue);
+                input.addEventListener('touchstart', setValue);
             });
         });
     });
