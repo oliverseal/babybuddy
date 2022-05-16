@@ -316,6 +316,10 @@ gulp.task('migrate', function(cb) {
     _runInPipenv(['python', 'manage.py', 'migrate'], cb);
 });
 
+gulp.task('shell', function(cb) {
+    _runInPipenv(['python', 'manage.py', 'shell'], cb);
+});
+
 gulp.task('makemessages', function(cb) {
     _runInPipenv(['python', 'manage.py', 'makemessages'], cb);
 });

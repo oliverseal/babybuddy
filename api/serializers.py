@@ -268,3 +268,13 @@ class WeightSerializer(CoreModelSerializer, TaggableSerializer):
     class Meta:
         model = models.Weight
         fields = ("id", "child", "weight", "date", "notes", "tags")
+
+
+class HeatMapSerializer(serializers.Serializer):
+    """
+    Serializer for heatmap data.
+    """
+    hour = serializers.IntegerField()
+    minute = serializers.IntegerField()
+    count = serializers.IntegerField()
+    ratio = serializers.FloatField()

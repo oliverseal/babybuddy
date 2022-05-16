@@ -4,6 +4,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from core import models
+from django.conf import settings
+from django.db.models import Count
+
+from core.utils import get_heatmap
 
 from . import serializers, filters
 
@@ -41,6 +45,11 @@ class FeedingViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.FeedingSerializer
     filterset_class = filters.FeedingFilter
 
+    @action(detail=False, methods=["get"])
+    def heatmap(self, request, **kwargs):
+        map_data = get_heatmap(models.Feeding)
+        return Response(serializers.HeatMapSerializer(map_data, many=True).data)
+
 
 class HeadCircumferenceViewSet(viewsets.ModelViewSet):
     queryset = models.HeadCircumference.objects.all()
@@ -70,6 +79,11 @@ class SleepViewSet(viewsets.ModelViewSet):
     queryset = models.Sleep.objects.all()
     serializer_class = serializers.SleepSerializer
     filterset_class = filters.SleepFilter
+
+    @action(detail=False, methods=["get"])
+    def heatmap(self, request, **kwargs):
+        map_data = get_heatmap(models.Sleep)
+        return Response(serializers.HeatMapSerializer(map_data, many=True).data)
 
 
 class TagViewSet(viewsets.ModelViewSet):

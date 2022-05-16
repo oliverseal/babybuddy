@@ -35,10 +35,14 @@
 {% endblock %}
 
 {% block content %}
+    <div id="sleep-heatmap" class="heatmap-container"></div>
     <script type="application/javascript">
         window.addEventListener("DOMContentLoaded", function(event) {
             const t = new BabyBuddy.Timer('{{ timer.id }}', 'sleeptimer-status');
             t.run();
+
+            const hm = new BabyBuddy.HeatMap(document.querySelector(`#sleep-heatmap`));
+            hm.fetchMap('sleep');
         });
     </script>
 {% endblock %}

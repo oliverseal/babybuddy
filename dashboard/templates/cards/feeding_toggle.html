@@ -46,21 +46,25 @@
 {% endblock %}
 
 {% block content %}
-<script type="application/javascript">
-    window.addEventListener("DOMContentLoaded", function (event) {
-        const t = new BabyBuddy.Timer('{{ timer.id }}', 'feedingtimer-status');
-        t.run();
+    <div id="feedings-heatmap" class="heatmap-container"></div>
+    <script type="application/javascript">
+        window.addEventListener("DOMContentLoaded", function (event) {
+            const t = new BabyBuddy.Timer('{{ timer.id }}', 'feedingtimer-status');
+            t.run();
 
-        [...document.querySelectorAll('.feeding-timer form')].forEach(function(form) {
-            let hidden = form.querySelector('input[name="name"], input[name="amount"]');
-            [...form.querySelectorAll('input[type="submit"]')].forEach(function(input) {
-                function setValue(e) {
-                    hidden.value = input.dataset.amount;
-                }
-                input.addEventListener('mousedown', setValue);
-                input.addEventListener('touchstart', setValue);
+            [...document.querySelectorAll('.feeding-timer form')].forEach(function(form) {
+                let hidden = form.querySelector('input[name="name"], input[name="amount"]');
+                [...form.querySelectorAll('input[type="submit"]')].forEach(function(input) {
+                    function setValue(e) {
+                        hidden.value = input.dataset.amount;
+                    }
+                    input.addEventListener('mousedown', setValue);
+                    input.addEventListener('touchstart', setValue);
+                });
             });
+
+            const hm = new BabyBuddy.HeatMap(document.querySelector(`#feedings-heatmap`));
+            hm.fetchMap('feedings');
         });
-    });
-</script>
+    </script>
 {% endblock %}
