@@ -74,7 +74,7 @@ def random_color():
 
 def get_heatmap(model, tz_offset=-5, start_date=None, end_date=None):
     INTERVAL = 5
-    LOOKBACK = 14 # days
+    LOOKBACK = 10 # days
     # logoc to get the finner granularity
     # is a little to complex to put into raw sql
     # so we make python do it

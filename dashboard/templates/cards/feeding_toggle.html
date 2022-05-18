@@ -27,9 +27,9 @@
             {% csrf_token %}
             <input type="hidden" name="amount" value="{{ timer.name }}" />
             <input type="submit" class="btn btn-error" value="{% trans 'Stop 40' %}" data-amount="40" />
-            <input type="submit" class="btn btn-error" value="{% trans 'Stop 60' %}" data-amount="60" />
-            <input type="submit" class="btn btn-error" value="{% trans 'Stop 80' %}" data-amount="80" />
-            <input type="submit" class="btn btn-error" value="{% trans 'Stop 100' %}" data-amount="100" />
+            <input type="submit" class="btn btn-error" value="{% trans '60' %}" data-amount="60" />
+            <input type="submit" class="btn btn-error" value="{% trans '80' %}" data-amount="80" />
+            <input type="submit" class="btn btn-error" value="{% trans '100' %}" data-amount="100" />
         </form>
     </div>
     {% else %}
@@ -37,9 +37,9 @@
         {% csrf_token %}
         <input type="hidden" name="name" value="{{ timer.name }}" />
         <input type="submit" class="btn btn-primary" value="{% trans 'Start 40' %}" data-amount="40" />
-        <input type="submit" class="btn btn-primary" value="{% trans 'Start 60' %}" data-amount="60" />
-        <input type="submit" class="btn btn-primary" value="{% trans 'Start 80' %}" data-amount="80" />
-        <input type="submit" class="btn btn-primary" value="{% trans 'Start 100' %}" data-amount="100" />
+        <input type="submit" class="btn btn-primary" value="{% trans '60' %}" data-amount="60" />
+        <input type="submit" class="btn btn-primary" value="{% trans '80' %}" data-amount="80" />
+        <input type="submit" class="btn btn-primary" value="{% trans '100' %}" data-amount="100" />
     </form>
     {% endif %}
 </div>
@@ -63,7 +63,13 @@
                 });
             });
 
-            const hm = new BabyBuddy.HeatMap(document.querySelector(`#feedings-heatmap`));
+            const hm = new BabyBuddy.HeatMap(
+                document.querySelector(`#feedings-heatmap`),
+                [255, 255, 255],
+                [52, 58, 64],
+                [255, 255, 255],
+                2,
+            );
             hm.fetchMap('feedings');
         });
     </script>

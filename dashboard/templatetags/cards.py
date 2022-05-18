@@ -207,7 +207,7 @@ def card_feeding_toggle(context, child):
     empty = not instance
 
     return {
-        'type': 'timer',
+        'type': 'feeding',
         'timer': instance,
         'feeding_timer': instance,
         'empty': empty,
@@ -275,7 +275,7 @@ def card_sleep_toggle(context, child):
     empty = not instance
 
     return {
-        'type': 'timer',
+        'type': 'sleep',
         'timer': instance,
         'sleep_timer': instance,
         'empty': empty,

@@ -41,7 +41,12 @@
             const t = new BabyBuddy.Timer('{{ timer.id }}', 'sleeptimer-status');
             t.run();
 
-            const hm = new BabyBuddy.HeatMap(document.querySelector(`#sleep-heatmap`));
+            const hm = new BabyBuddy.HeatMap(
+                document.querySelector(`#sleep-heatmap`),
+                [55, 171, 233],
+                [52, 58, 64],
+                [255, 255, 255],
+            );
             hm.fetchMap('sleep');
         });
     </script>

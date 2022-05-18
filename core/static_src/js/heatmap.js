@@ -1,15 +1,32 @@
 
 // corresponds to get_heatmap constants in utils.py
 const INTERVAL = 5;
-const LOOKBACK = 14;
+const LOOKBACK = 10;
+
+function mix(color1, color2, weight) {
+    var p = Math.min(weight, 1.0);
+    var w = p * 2 - 1;
+    var w1 = (w / 1 + 1) / 2;
+    var w2 = 1 - w1;
+    var rgb = [
+        Math.round(color1[0] * w1 + color2[0] * w2),
+        Math.round(color1[1] * w1 + color2[1] * w2),
+        Math.round(color1[2] * w1 + color2[2] * w2)
+    ];
+    return rgb;
+}
 
 class HeatMap {
-    constructor(container) {
+    constructor(container, hotColor, coldColor, nowColor, scale=1.0) {
         this.container = container;
         this.canvasContainer = document.createElement('div');
         this.canvasContainer.className = 'heatmap-canvas-container';
         this.container.appendChild(this.canvasContainer);
         this.lastData = [];
+        this.hotColor = hotColor;
+        this.coldColor = coldColor;
+        this.nowColor = nowColor;
+        this.scale = scale;
 
         this.makeCanvas();
         this.makePredictor();
@@ -75,8 +92,10 @@ class HeatMap {
         data.forEach((segment, i) => {
             let x = Math.floor(i * segmentSize);
             let y = 0;
-            let heat = 255 - Math.floor(segment.ratio * 255);
-            this.ctx.fillStyle = `rgb(${heat}, ${heat}, ${heat})`;
+            const ratio = segment.ratio * this.scale;
+            const tempColorArray = mix(this.hotColor, this.coldColor, ratio);
+            const heat = `rgb(${tempColorArray[0]}, ${tempColorArray[1]}, ${tempColorArray[2]})`;
+            this.ctx.fillStyle = heat;
             this.ctx.fillRect(x, y + 4, Math.ceil(segmentSize), meterHeight);
             if (segment.hour != currentHour) {
                 currentHour = segment.hour;
@@ -94,7 +113,7 @@ class HeatMap {
         const hourSegment = this.canvas.width / (24 * window.devicePixelRatio);
         const nowX = Math.floor((now.getHours() + now.getMinutes() / 60) * hourSegment);
         this.ctx.lineWidth = 1;
-        this.ctx.fillStyle = '#37ABE9';
+        this.ctx.fillStyle = `rgb(${this.nowColor[0]}, ${this.nowColor[1]}, ${this.nowColor[2]})`;
         this.ctx.fillRect(nowX, 0, 1, this.canvas.height);
     }
 
