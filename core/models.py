@@ -608,6 +608,13 @@ class Timer(models.Model):
         return title
 
     @property
+    def pending_duration(self):
+        """ Get the pending duration. """
+        if self.end:
+            return self.end - self.start
+        return timezone.now() - self.start
+
+    @property
     def user_username(self):
         """Get Timer user's name with a preference for the full name."""
         if self.user.get_full_name():

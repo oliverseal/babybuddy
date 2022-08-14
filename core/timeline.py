@@ -174,7 +174,7 @@ def _add_pumpings(min_date, max_date, events, child=None):
     prev_start = None
 
     instances = Pumping.objects.filter(
-        start__range=(yesterday, max_date)).order_by('start')
+        time__range=(yesterday, max_date)).order_by('time')
     if child:
         instances = instances.filter(child=child)
     for instance in instances:
@@ -184,9 +184,9 @@ def _add_pumpings(min_date, max_date, events, child=None):
         time_since_prev = None
         if prev_start:
             time_since_prev = \
-                timesince.timesince(prev_start, now=instance.start)
-        prev_start = instance.start
-        if instance.start < min_date:
+                timesince.timesince(prev_start, now=instance.time)
+        prev_start = instance.time
+        if instance.time < min_date:
             continue
         edit_link = reverse('core:pumping-update', args=[instance.id])
         if instance.amount:
@@ -194,7 +194,7 @@ def _add_pumpings(min_date, max_date, events, child=None):
                 'amount': instance.amount,
             })
         events.append({
-            'time': timezone.localtime(instance.start),
+            'time': timezone.localtime(instance.time),
             'event': _('Started pumping for %(child)s.') % {
                 'child': instance.child.first_name
             },
@@ -211,7 +211,7 @@ def _add_pumpings(min_date, max_date, events, child=None):
             },
             'details': details,
             'edit_link': edit_link,
-            'duration': timesince.timesince(instance.start, now=instance.end),
+            'duration': timesince.timesince(instance.time, now=instance.end),
             'model_name': instance.model_name,
             'type': 'end'
         })
