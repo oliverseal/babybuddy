@@ -9,7 +9,7 @@
 
 {% block title %}
     {% if pumping %}
-        {% blocktrans trimmed with since=pumping.start|timesince time=pumping.start|time %}
+        {% blocktrans trimmed with since=pumping.time|timesince time=pumping.time|time %}
             <div>{{ since }} ago</div>
             <small>{{ time }}</small>
         {% endblocktrans %}

@@ -231,7 +231,7 @@ class TimerSerializer(CoreModelSerializer):
 
     class Meta:
         model = models.Timer
-        fields = ("id", "child", "name", "start", "end", "duration", "active", "user")
+        fields = ("id", "child", "name", "start", "end", "duration", "active", "user", "intent")
 
     def validate(self, attrs):
         attrs = super(TimerSerializer, self).validate(attrs)

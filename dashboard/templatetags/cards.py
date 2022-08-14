@@ -183,7 +183,7 @@ def card_pumping_last(context, child):
     """
     instance = models.Pumping.objects.filter(child=child) \
         .filter(**_filter_data_age(context)) \
-        .order_by('-end').first()
+        .order_by('-time').first()
     empty = not instance
 
     return {

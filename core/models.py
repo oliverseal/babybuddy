@@ -278,18 +278,31 @@ class Feeding(models.Model):
     duration = models.DurationField(
         editable=False, null=True, verbose_name=_("Duration")
     )
-    amount = models.FloatField(blank=True, null=True, verbose_name=_('Amount'))
-    notes = models.TextField(blank=True, null=True, verbose_name=_('Notes'))
-
-    def save(self, *args, **kwargs):
-        if self.start and self.end:
-            self.duration = self.end - self.start
-        super().save(*args, **kwargs)
-
-    def clean(self):
-        validate_time(self.start, 'start')
-        validate_duration(self)
-        validate_unique_period(self.__class__.objects.filter(child=self.child), self)
+    type = models.CharField(
+        choices=[
+            ("breast milk", _("Breast milk")),
+            ("formula", _("Formula")),
+            ("fortified breast milk", _("Fortified breast milk")),
+            ("solid food", _("Solid food")),
+        ],
+        max_length=255,
+        verbose_name=_("Type"),
+    )
+    method = models.CharField(
+        choices=[
+            ("bottle", _("Bottle")),
+            ("left breast", _("Left breast")),
+            ("right breast", _("Right breast")),
+            ("both breasts", _("Both breasts")),
+            ("parent fed", _("Parent fed")),
+            ("self fed", _("Self fed")),
+        ],
+        max_length=255,
+        verbose_name=_("Method"),
+    )
+    amount = models.FloatField(blank=True, null=True, verbose_name=_("Amount"))
+    notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
+    tags = TaggableManager(blank=True, through=Tagged)
 
     objects = models.Manager()
 
@@ -301,6 +314,16 @@ class Feeding(models.Model):
 
     def __str__(self):
         return str(_("Feeding"))
+
+    def save(self, *args, **kwargs):
+        if self.start and self.end:
+            self.duration = self.end - self.start
+        super(Feeding, self).save(*args, **kwargs)
+
+    def clean(self):
+        validate_time(self.start, "start")
+        validate_duration(self)
+        validate_unique_period(Feeding.objects.filter(child=self.child), self)
 
 
 class HeadCircumference(models.Model):
@@ -406,6 +429,24 @@ class Pumping(models.Model):
     time = models.DateTimeField(blank=False, null=False, verbose_name=_("Time"))
     notes = models.TextField(blank=True, null=True, verbose_name=_("Notes"))
 
+    # a part of the legacy Oliver model, but not used
+    end = models.DateTimeField(blank=True, null=True, verbose_name=_("Time"))
+    duration = models.DurationField(
+        editable=False, null=True, verbose_name=_("Duration")
+    )
+    method = models.CharField(
+        choices=[
+            ("bottle", _("Bottle")),
+            ("left breast", _("Left breast")),
+            ("right breast", _("Right breast")),
+            ("both breasts", _("Both breasts")),
+            ("parent fed", _("Parent fed")),
+            ("self fed", _("Self fed")),
+        ],
+        max_length=255,
+        verbose_name=_("Method"),
+    )
+
     objects = models.Manager()
 
     class Meta:
@@ -503,59 +544,6 @@ class Temperature(models.Model):
         validate_time(self.time, "time")
 
 
-class TummyTime(models.Model):
-    model_name = 'tummytime'
-    child = models.ForeignKey(
-        'Child',
-        on_delete=models.CASCADE,
-        related_name='tummy_time',
-        verbose_name=_('Child')
-    )
-    start = models.DateTimeField(
-        blank=False,
-        null=False,
-        verbose_name=_('Start time')
-    )
-    end = models.DateTimeField(
-        blank=False,
-        null=False,
-        verbose_name=_('End time')
-    )
-    duration = models.DurationField(
-        editable=False,
-        null=True,
-        verbose_name=_('Duration')
-    )
-    milestone = models.CharField(
-        blank=True,
-        max_length=255,
-        verbose_name=_('Milestone')
-    )
-
-    objects = models.Manager()
-
-    class Meta:
-        default_permissions = ('view', 'add', 'change', 'delete')
-        ordering = ['-start']
-        verbose_name = _('Tummy Time')
-        verbose_name_plural = _('Tummy Time')
-
-    def __str__(self):
-        return str(_('Tummy Time'))
-
-    def save(self, *args, **kwargs):
-        if self.start and self.end:
-            self.duration = self.end - self.start
-        super(TummyTime, self).save(*args, **kwargs)
-
-    def clean(self):
-        validate_time(self.start, 'start')
-        validate_time(self.end, 'end')
-        validate_duration(self)
-        validate_unique_period(
-            TummyTime.objects.filter(child=self.child), self)
-
-
 class Timer(models.Model):
     model_name = "timer"
     child = models.ForeignKey(
@@ -594,9 +582,10 @@ class Timer(models.Model):
             (Sleep.model_name, _('Sleep')),
             (Feeding.model_name, _('Feeding')),
             (Pumping.model_name, _('Pumping')),
-            (TummyTime.model_name, _('TummyTime')),
+            ("tummytime", _('TummyTime')),
         ],
     )
+
 
     objects = models.Manager()
 
@@ -617,13 +606,6 @@ class Timer(models.Model):
         if title and self.child and Child.count() > 1:
             title = format_lazy("{title} ({child})", title=title, child=self.child)
         return title
-
-    @property
-    def pending_duration(self):
-        """ Get the pending duration. """
-        if self.end:
-            return self.end - self.start
-        return timezone.now() - self.start
 
     @property
     def user_username(self):
@@ -668,6 +650,47 @@ class Timer(models.Model):
         if self.end:
             validate_time(self.end, "end")
         validate_duration(self)
+
+
+class TummyTime(models.Model):
+    model_name = "tummytime"
+    child = models.ForeignKey(
+        "Child",
+        on_delete=models.CASCADE,
+        related_name="tummy_time",
+        verbose_name=_("Child"),
+    )
+    start = models.DateTimeField(blank=False, null=False, verbose_name=_("Start time"))
+    end = models.DateTimeField(blank=False, null=False, verbose_name=_("End time"))
+    duration = models.DurationField(
+        editable=False, null=True, verbose_name=_("Duration")
+    )
+    milestone = models.CharField(
+        blank=True, max_length=255, verbose_name=_("Milestone")
+    )
+    tags = TaggableManager(blank=True, through=Tagged)
+
+    objects = models.Manager()
+
+    class Meta:
+        default_permissions = ("view", "add", "change", "delete")
+        ordering = ["-start"]
+        verbose_name = _("Tummy Time")
+        verbose_name_plural = _("Tummy Time")
+
+    def __str__(self):
+        return str(_("Tummy Time"))
+
+    def save(self, *args, **kwargs):
+        if self.start and self.end:
+            self.duration = self.end - self.start
+        super(TummyTime, self).save(*args, **kwargs)
+
+    def clean(self):
+        validate_time(self.start, "start")
+        validate_time(self.end, "end")
+        validate_duration(self)
+        validate_unique_period(TummyTime.objects.filter(child=self.child), self)
 
 
 class Weight(models.Model):

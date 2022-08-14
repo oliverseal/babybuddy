@@ -25,6 +25,7 @@ class Migration(migrations.Migration):
                 ),
                 ("amount", models.FloatField(verbose_name="Amount")),
                 ("time", models.DateTimeField(verbose_name="Time")),
+                ("end", models.DateTimeField(verbose_name="Time", blank=True, null=True)),
                 (
                     "notes",
                     models.TextField(blank=True, null=True, verbose_name="Notes"),
@@ -38,6 +39,13 @@ class Migration(migrations.Migration):
                         verbose_name="Child",
                     ),
                 ),
+                ("durstion", models.DurationField(verbose_name="Duration", blank=True, null=True)),
+                ("method", models.CharField(blank=True, max_length=255, null=True, verbose_name="Method", choices=[
+                        ("bottle", "Bottle"),
+                        ("left breast", "Left breast"),
+                        ("right breast", "Right breast"),
+                    ],
+                )),
             ],
             options={
                 "verbose_name": "Pumping",
