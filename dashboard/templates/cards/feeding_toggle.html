@@ -26,20 +26,20 @@
         <form action="{% url 'core:feeding-timer-stop' %}?dashboard=true" role="form" method="post" class="d-inline" data-mode="stop">
             {% csrf_token %}
             <input type="hidden" name="amount" value="{{ timer.name }}" />
-            <input type="submit" class="btn btn-error" value="{% trans 'Stop 40' %}" data-amount="40" />
-            <input type="submit" class="btn btn-error" value="{% trans '60' %}" data-amount="60" />
-            <input type="submit" class="btn btn-error" value="{% trans '80' %}" data-amount="80" />
+            <input type="submit" class="btn btn-error" value="{% trans 'Stop 80' %}" data-amount="80" />
             <input type="submit" class="btn btn-error" value="{% trans '100' %}" data-amount="100" />
+            <input type="submit" class="btn btn-error" value="{% trans '120' %}" data-amount="120" />
+            <input type="submit" class="btn btn-error" value="{% trans '150' %}" data-amount="150" />
         </form>
     </div>
     {% else %}
     <form action="{% url 'core:feeding-timer-add-quick' %}?dashboard=true" role="form" method="post" class="d-inline" data-mode="start">
         {% csrf_token %}
         <input type="hidden" name="name" value="{{ timer.name }}" />
-        <input type="submit" class="btn btn-primary" value="{% trans 'Start 40' %}" data-amount="40" />
-        <input type="submit" class="btn btn-primary" value="{% trans '60' %}" data-amount="60" />
-        <input type="submit" class="btn btn-primary" value="{% trans '80' %}" data-amount="80" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'Start 80' %}" data-amount="80" />
         <input type="submit" class="btn btn-primary" value="{% trans '100' %}" data-amount="100" />
+        <input type="submit" class="btn btn-primary" value="{% trans '120' %}" data-amount="120" />
+        <input type="submit" class="btn btn-primary" value="{% trans '150' %}" data-amount="150" />
     </form>
     {% endif %}
 </div>
